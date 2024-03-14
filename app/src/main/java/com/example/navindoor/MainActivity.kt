@@ -458,6 +458,7 @@ class MainActivity : AppCompatActivity() {
             gatt.close()
         }
     }
+   // print("Hello")
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
