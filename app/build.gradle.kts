@@ -55,6 +55,8 @@ dependencies {
     implementation ("com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.16.5")
     implementation ("com.google.android.gms:play-services-auth:19.2.0")
     implementation("com.amazonaws:aws-android-sdk-auth-userpools:2.22.2")
+    implementation ("com.airbnb.android:lottie:4.0.0")
+
 
 
 }
