@@ -52,8 +52,10 @@ void setup() {
 
   // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
   // Create a BLE Descriptor
-  pCharacteristic->addDescriptor(new BLE2902());
-
+  BLE2902 *pBLE2902;
+  pBLE2902 = new BLE2902();
+  pBLE2902->setNotifications(true); 
+  pCharacteristic->addDescriptor(pBLE2902);
   // Start the service
   pService->start();
 
