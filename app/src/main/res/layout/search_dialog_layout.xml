@@ -1,0 +1,36 @@
+<!-- search_dialog_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <AutoCompleteTextView
+        android:id="@+id/fromEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="   From"
+        android:inputType="text"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/toEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="   To"
+        android:inputType="text"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:background="@drawable/button_background"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
