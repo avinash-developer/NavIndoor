@@ -17,7 +17,6 @@ object CognitoHelper {
     private lateinit var cognitoUserPool: CognitoUserPool
 
     fun initialize(context: Context) {
-        // Initialize Cognito User Pool using the provided context
         cognitoUserPool = CognitoUserPool(
             context,
             "us-east-1_Wr28jXjWd",
@@ -40,37 +39,10 @@ object CognitoHelper {
         cognitoUserPool.signUpInBackground(username, password, userAttributes, null, callback)
     }
 
-    fun getSession(username: String, password: String, callback: AuthenticationHandler) {
-        val user = cognitoUserPool.getUser(username)
-        val authenticationDetails = AuthenticationDetails(username, password, null)
-        user.getSessionInBackground(object : AuthenticationHandler {
-            override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
-                // Authentication successful, display logged-in message
-                // You can also handle further operations here
-                callback.onSuccess(userSession, newDevice)
-            }
-
-            override fun getAuthenticationDetails(
-                authenticationContinuation: AuthenticationContinuation?,
-                userId: String?
-            ) {
-                // Provide the authentication details
-                authenticationContinuation?.setAuthenticationDetails(authenticationDetails)
-                authenticationContinuation?.continueTask()
-            }
-
-            override fun authenticationChallenge(continuation: ChallengeContinuation?) {
-                // Handle authentication challenge
-            }
-
-            override fun onFailure(exception: Exception?) {
-                // Authentication failed, handle failure
-                callback.onFailure(exception)
-            }
-
-            override fun getMFACode(continuation: MultiFactorAuthenticationContinuation?) {
-                // Handle multi-factor authentication code
-            }
-        })
+    fun authenticate(email: String, password: String, callback: AuthenticationHandler) {
+        val user = cognitoUserPool.getUser(email)
+        user.getSessionInBackground(callback)
     }
+
+
 }

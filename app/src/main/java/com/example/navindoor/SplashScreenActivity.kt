@@ -17,22 +17,22 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
 
-        // Initialize shared preferences
+
         sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
 
-        // Check if the user is registered
+
         if (isRegistered()) {
-            // User is already registered, navigate to MainActivity
+
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            // User is not registered, navigate to RegisterActivity
+
             startActivity(Intent(this, RegisterActivity::class.java))
         }
         finish()
     }
 
     private fun isRegistered(): Boolean {
-        // Retrieve the registration status from shared preferences
+
         return sharedPreferences.getBoolean("isRegistered", false)
     }
 }

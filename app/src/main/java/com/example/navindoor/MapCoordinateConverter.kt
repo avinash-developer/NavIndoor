@@ -3,11 +3,11 @@ package com.example.navindoor
 class PixelPoint(val x: Double, val y: Double)
 
 class MapCoordinateConverter {
-    // Define the dimensions of the map image in pixels
+
     private val MAP_IMAGE_WIDTH = 2179
     private val MAP_IMAGE_HEIGHT = 4669
 
-    // Define the real-world coordinates corresponding to the top-left and bottom-right corners of the map image
+
     private val REAL_WORLD_LONGITUDE_A = 0.0
     private val REAL_WORLD_LATITUDE_A = 0.0
     private val REAL_WORLD_LONGITUDE_B = 10.0
