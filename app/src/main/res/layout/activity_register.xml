@@ -35,12 +35,30 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/continueWithoutRegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Continue Without Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+
+    <Button
+        android:id="@+id/enableNearbyPermissionsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Nearby Permissions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/continueWithoutRegisterButton" />
+
+    <TextView
+        android:id="@+id/nearbyPermissionWarningTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warning: Location services will not work if nearby device permissions are not allowed."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enableNearbyPermissionsButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,21 +12,6 @@
         android:src="@drawable/campus_map"
         android:contentDescription="University Map" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/searchAutoCompleteTextView"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:hint="   Search here"
-            android:background="@drawable/edit_text_background"
-            android:inputType="text" />
-
-    </RelativeLayout>
-
     <ImageView
         android:id="@+id/markerImageView"
         android:layout_width="wrap_content"
@@ -36,16 +21,45 @@
         android:layout_margin="8dp"
         android:layout_gravity="bottom|end" />
 
-    <!-- Circular button for mute/unmute -->
+    <!-- Mute/Unmute Button -->
     <ImageButton
         android:id="@+id/muteButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/circle_button_background"
         android:contentDescription="Mute/Unmute"
         android:src="@drawable/volume" />
 
-</FrameLayout>
+    <!-- Search Button -->
+    <ImageButton
+        android:id="@+id/searchbutton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/muteButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circle_button_background"
+        android:contentDescription="Search"
+        android:src="@drawable/search" />
+
+    <!-- Info Button -->
+    <ImageButton
+        android:id="@+id/infobutton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/searchbutton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circle_button_background"
+        android:contentDescription="Info"
+        android:src="@drawable/info" />
+
+
+
+</RelativeLayout>

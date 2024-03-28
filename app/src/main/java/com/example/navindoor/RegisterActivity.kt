@@ -3,20 +3,16 @@ package com.example.navindoor
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
 import com.amazonaws.services.cognitoidentityprovider.model.SignUpResult
+import android.provider.Settings
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -35,7 +31,21 @@ class RegisterActivity : AppCompatActivity() {
         val signUpButton: Button = findViewById(R.id.signUpButton)
         val usernameEditText: EditText = findViewById(R.id.usernameEditText)
         val passwordEditText: EditText = findViewById(R.id.passwordEditText)
-        val loginButton: Button = findViewById(R.id.loginButton)
+        val enableNearbyPermissionsButton: Button = findViewById(R.id.enableNearbyPermissionsButton)
+        val continueWithoutRegisterButton: Button = findViewById(R.id.continueWithoutRegisterButton)
+
+        continueWithoutRegisterButton.setOnClickListener {
+            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+            finish()
+        }
+
+        enableNearbyPermissionsButton.setOnClickListener {
+            // Open the app settings screen
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        }
 
         signUpButton.setOnClickListener {
             val username = usernameEditText.text.toString()
@@ -64,48 +74,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             })
         }
-        loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            login(username, password)
-        }
+
 
     }
 
-    private fun login(username: String, password: String) {
-        val authenticationHandler = object : AuthenticationHandler {
-            override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
 
-                if (userSession != null && userSession.idToken != null) {
-
-                    Toast.makeText(this@RegisterActivity, "Logged in successfully", Toast.LENGTH_SHORT).show()
-
-                } else {
-
-                    onFailure(Exception("User session or idToken is null"))
-                }
-            }
-
-            override fun onFailure(exception: Exception?) {
-
-                Toast.makeText(this@RegisterActivity, "Login failed: ${exception?.message}", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation?, userId: String?) {
-
-            }
-
-            override fun getMFACode(continuation: MultiFactorAuthenticationContinuation?) {
-
-            }
-
-            override fun authenticationChallenge(continuation: ChallengeContinuation?) {
-
-            }
-        }
-
-        CognitoHelper.authenticate(username, password, authenticationHandler)
-    }
 }
 
 

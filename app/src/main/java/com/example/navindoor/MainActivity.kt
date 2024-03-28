@@ -9,45 +9,44 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCallback
-import android.bluetooth.BluetoothGattCharacteristic
-import android.bluetooth.BluetoothProfile
-import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanResult
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.ImageButton
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import java.util.Locale
-import java.util.UUID
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Handler
+import android.util.Log
+import android.widget.RelativeLayout
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mapImageView: ImageView
     private lateinit var markerImageView: ImageView
     private lateinit var muteButton: ImageButton
+    private lateinit var searchbutton: ImageButton
+    private lateinit var infobutton: ImageButton
     private var scaleGestureDetector: ScaleGestureDetector? = null
     private var gestureDetector: GestureDetector? = null
     private var minScale = 1f
     private var maxScale = 2f
-    private val REQUEST_ENABLE_BT = 1
-    private val REQUEST_LOCATION_PERMISSION = 2
-    private val REQUEST_BLUETOOTH_SCAN_PERMISSION = 3
-    private val LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION
-    private val BLUETOOTH_SCAN_PERMISSION = Manifest.permission.BLUETOOTH_SCAN
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private lateinit var textToSpeech: TextToSpeech
     private var isMuted = false
+    private val handler = Handler()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         markerImageView = findViewById(R.id.markerImageView)
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         muteButton = findViewById(R.id.muteButton)
+        searchbutton=findViewById(R.id.searchbutton)
+        infobutton=findViewById(R.id.infobutton)
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         gestureDetector = GestureDetector(this, GestureListener())
 
@@ -66,8 +67,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val searchAutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.searchAutoCompleteTextView)
-        searchAutoCompleteTextView.setOnClickListener {
+
+        searchbutton.setOnClickListener{
             showSearchDialog()
         }
 
@@ -120,29 +121,29 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
         if (bluetoothAdapter == null) {
-            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Bluetooth is not supported on this device", Toast.LENGTH_SHORT).show()
             finish()
-            return
         }
 
+        // Check and request necessary permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
+        }
+
+        // Check if Bluetooth is enabled, if not, request to turn it on
         if (!bluetoothAdapter.isEnabled) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
-                return
-            }
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
-        } else {
-            checkLocationAndBluetoothPermissions()
-            
+            val enableBluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT)
         }
 
+
+        // Register the BluetoothReceiver
+        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        registerReceiver(bluetoothReceiver, filter)
+
+        // Start scanning for Bluetooth devices
+        startBluetoothScanContinuously()
     }
 
 
@@ -174,297 +175,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun checkLocationAndBluetoothPermissions() {
-        val permissionsToRequest = mutableListOf<String>()
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_SCAN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(Manifest.permission.BLUETOOTH_SCAN)
-        }
-
-        if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                REQUEST_LOCATION_PERMISSION
-
-            )
-
-        } else {
-            startScan()
-        }
+    override fun onPause() {
+        super.onPause()
+        stopBluetoothScan()
     }
 
-
-    private fun startScan() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                BLUETOOTH_SCAN_PERMISSION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        bluetoothAdapter.bluetoothLeScanner.startScan(scanCallback)
+    override fun onResume() {
+        super.onResume()
+        startBluetoothScanContinuously()
     }
-
-    private fun stopScan() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                BLUETOOTH_SCAN_PERMISSION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        bluetoothAdapter.bluetoothLeScanner.stopScan(scanCallback)
-    }
-
-    private val scanCallback = object : ScanCallback() {
-        override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val device = result.device
-            if (ActivityCompat.checkSelfPermission(
-                    this@MainActivity,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
-                return
-            }
-            if (device.name?.equals("ESP32") == true) {
-                connectToDevice(device)
-
-
-            }
-        }
-    }
-
-    private fun connectToDevice(device: BluetoothDevice) {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-            return
-        }
-        device.connectGatt(this, false, gattCallback)
-    }
-
-    private val gattCallback = object : BluetoothGattCallback() {
-        override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-
-
-                if (ActivityCompat.checkSelfPermission(
-                        this@MainActivity,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-
-                    return
-                }
-                gatt.discoverServices()
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-
-
-                gatt.close()
-            }
-        }
-
-        override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
-            val service = gatt.getService(ESP32_1_SERVICE_UUID)
-            var characteristic = service?.getCharacteristic(ESP32_1_CHARACTERISTIC_UUID)
-
-            if (characteristic == null) {
-
-                val secondService = gatt.getService(ESP32_2_SERVICE_UUID)
-                characteristic = secondService?.getCharacteristic(ESP32_2_CHARACTERISTIC_UUID)
-            }
-
-            if (characteristic == null) {
-
-                val thirdService = gatt.getService(ESP32_3_SERVICE_UUID)
-                characteristic = thirdService?.getCharacteristic(ESP32_3_CHARACTERISTIC_UUID)
-            }
-
-            if (characteristic != null) {
-                if (ActivityCompat.checkSelfPermission(
-                        this@MainActivity,
-                        Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-
-                    return
-                }
-                gatt.readCharacteristic(characteristic)
-            }
-        }
-
-        override fun onCharacteristicRead(
-            gatt: BluetoothGatt,
-            characteristic: BluetoothGattCharacteristic,
-            status: Int
-        ) {
-            val data = characteristic.value
-            val dataString = data?.toString(Charsets.UTF_8)
-            runOnUiThread {
-                Toast.makeText(applicationContext, "Received data: $dataString", Toast.LENGTH_SHORT)
-                    .show()
-                if (dataString == "Block_36") {
-                    val coordinates = MapCoordinateConverter().pixelToCoordinate(
-                        PixelPoint(
-                            431.0,
-                            1026.0
-                        )
-                    )
-                    setMarkerToCoordinate(
-                        coordinates[0],
-                        coordinates[1],
-                        mapImageView.scaleX
-                    )
-                    if(!isMuted) {
-                        textToSpeech.speak(
-                            "You are near Block 36 and Beacon-1.",
-                            TextToSpeech.QUEUE_FLUSH,
-                            null,
-                            null
-                        )
-                    }
-                }
-                else if (dataString == "Block_37") {
-                    val coordinates = MapCoordinateConverter().pixelToCoordinate(
-                        PixelPoint(
-                            484.0,
-                            1034.0
-                        )
-                    )
-                    setMarkerToCoordinate(
-                        coordinates[0],
-                        coordinates[1],
-                        mapImageView.scaleX
-                    )
-                    if(!isMuted) {
-                        textToSpeech.speak(
-                            "You are near Block 37 and Beacon-2.",
-                            TextToSpeech.QUEUE_FLUSH,
-                            null,
-                            null
-                        )
-                    }
-                }
-                else if (dataString=="Block_38"){
-                    val coordinates = MapCoordinateConverter().pixelToCoordinate(
-                        PixelPoint(
-                            541.0,
-                            1072.0
-                        )
-                    )
-
-
-                    setMarkerToCoordinate(
-                        coordinates[0],
-                        coordinates[1],
-                        mapImageView.scaleX
-                    )
-                    if(!isMuted) {
-                        textToSpeech.speak(
-                            "You are near Block 38 and Beacon-3.",
-                            TextToSpeech.QUEUE_FLUSH,
-                            null,
-                            null
-                        )
-                    }
-                }
-
-
-
-            }
-
-
-            if (ActivityCompat.checkSelfPermission(
-                    this@MainActivity,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
-                return
-            }
-            gatt.disconnect()
-            gatt.close()
-        }
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_LOCATION_PERMISSION -> {
-                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                    startScan()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Location permission required for Bluetooth scanning",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
-                }
-            }
-
-            REQUEST_BLUETOOTH_SCAN_PERMISSION -> {
-                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                    startScan()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Bluetooth scan permission required for Bluetooth scanning",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
-                }
-            }
-        }
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
-        stopScan()
         textToSpeech.stop()
         textToSpeech.shutdown()
     }
 
-    companion object {
-        private val ESP32_1_SERVICE_UUID =
-            UUID.fromString("4fafc201-1fb5-459e-8fcc-c5c9c331914b")
-        private val ESP32_1_CHARACTERISTIC_UUID =
-            UUID.fromString("beb5483e-36e1-4688-b7f5-ea07361b26a8")
 
-        private val ESP32_2_SERVICE_UUID =
-            UUID.fromString("932520fb-68f3-4d89-ba7b-f8d3c6b22772")
-        private val ESP32_2_CHARACTERISTIC_UUID =
-            UUID.fromString("3693d5c0-f076-4d82-ac97-19f6139e64ce")
-
-        private val ESP32_3_SERVICE_UUID =
-            UUID.fromString("0f22311f-2a20-4fe5-b0f2-beb6b8ccab49")
-        private val ESP32_3_CHARACTERISTIC_UUID =
-            UUID.fromString("4ab015d4-bf71-4aac-9d93-23e2b151c746")
-    }
 
     data class LocationRange(
         val lonRange: ClosedFloatingPointRange<Double>,
@@ -522,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         val adjustedY = adjustedMarkerY + translationY
 
 
-        val layoutParams = markerImageView.layoutParams as FrameLayout.LayoutParams
+        val layoutParams = markerImageView.layoutParams as RelativeLayout.LayoutParams
         layoutParams.leftMargin = (adjustedX.toInt() - markerImageView.width / 2).coerceAtLeast(0)
         layoutParams.topMargin = (adjustedY.toInt() - markerImageView.height / 2).coerceAtLeast(0)
         markerImageView.layoutParams = layoutParams
@@ -559,24 +286,25 @@ class MainActivity : AppCompatActivity() {
         when {
             normalizedFromLocation == "block25" && normalizedToLocation == "block36" ||
                     normalizedFromLocation == "block36" && normalizedToLocation == "block25" -> {
-                mapImageView.setImageResource(R.drawable.block25)
+                mapImageView.setImageResource(R.drawable.b36_b25)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
 
             }
             normalizedFromLocation == "block25" && normalizedToLocation == "block34" ||
                     normalizedFromLocation == "block34" && normalizedToLocation == "block25" -> {
-                mapImageView.setImageResource(R.drawable.block34)
+                mapImageView.setImageResource(R.drawable.b25_b34)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
             }
             normalizedFromLocation == "block34" && normalizedToLocation == "block36" ||
                     normalizedFromLocation == "block36" && normalizedToLocation == "block34" -> {
-                mapImageView.setImageResource(R.drawable.block36)
+               mapImageView.setImageResource(R.drawable.b36_b34)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
 
             }
-            normalizedFromLocation == "maingate" && normalizedToLocation == "bh1" ||
-                    normalizedFromLocation == "bh1" && normalizedToLocation == "maingate" -> {
-                mapImageView.setImageResource(R.drawable.bh1)
+
+            normalizedFromLocation == "maingate" && normalizedToLocation == "admissionblock" ||
+                    normalizedFromLocation == "admissionblock" && normalizedToLocation == "maingate" -> {
+                mapImageView.setImageResource(R.drawable.main_30)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
 
             }
@@ -588,6 +316,102 @@ class MainActivity : AppCompatActivity() {
         return location.toLowerCase().replace("\\s".toRegex(), "")
     }
 
+
+    private val bluetoothReceiver = object : BroadcastReceiver() {
+        @SuppressLint("MissingPermission")
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action
+            if (BluetoothDevice.ACTION_FOUND == action) {
+                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                device?.let {
+                    Log.d("BluetoothDevice", "Name: ${device.name}, Address: ${device.address}")
+                    if (device.name == "Block25") {
+                        mapImageView.setImageResource(R.drawable.block_25)
+                        Toast.makeText(this@MainActivity, "Block 25", Toast.LENGTH_SHORT).show()
+                        if(!isMuted) {
+                            textToSpeech.speak(
+                                "You are near Block 25 and Beacon-1 highlighted.",
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                null
+                            )
+                        }
+                    }
+                    if (device.name == "Block30") {
+                        mapImageView.setImageResource(R.drawable.block_30)
+                        Toast.makeText(this@MainActivity, "Block 30", Toast.LENGTH_SHORT).show()
+                        if(!isMuted) {
+                            textToSpeech.speak(
+                                "You are near Admission Block and Beacon-2 highlighted.",
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                null
+                            )
+                        }
+                    }
+                    if (device.name == "Block34") {
+                        mapImageView.setImageResource(R.drawable.block_34)
+                        Toast.makeText(this@MainActivity, "Block 34 highlighted", Toast.LENGTH_SHORT).show()
+                        if(!isMuted) {
+                            textToSpeech.speak(
+                                "You are near Block 34 and Beacon-3.",
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                null
+                            )
+                        }
+                    }
+                    if (device.name == "Block36") {
+                        mapImageView.setImageResource(R.drawable.block_36)
+                        Toast.makeText(this@MainActivity, "Block 36 highlighted", Toast.LENGTH_SHORT).show()
+                        if(!isMuted) {
+                            textToSpeech.speak(
+                                "You are near Block 36 and Beacon-4.",
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                null
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startBluetoothScanContinuously() {
+        // Start Bluetooth scan in a loop with a delay
+        handler.postDelayed(scanRunnable, SCAN_INTERVAL)
+    }
+
+    private fun stopBluetoothScan() {
+        // Remove pending callbacks from the handler
+        handler.removeCallbacks(scanRunnable)
+        // Unregister the Bluetooth receiver
+        unregisterReceiver(bluetoothReceiver)
+    }
+
+    private val scanRunnable = object : Runnable {
+        override fun run() {
+            // Start Bluetooth scan
+            startBluetoothScan()
+            // Schedule the next scan
+            handler.postDelayed(this, SCAN_INTERVAL)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startBluetoothScan() {
+        bluetoothAdapter.startDiscovery()
+    }
+
+
+
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 100
+        private const val REQUEST_ENABLE_BT = 101
+        private const val SCAN_INTERVAL: Long = 3000
+    }
 
 }
 
