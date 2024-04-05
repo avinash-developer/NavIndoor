@@ -120,6 +120,11 @@ class MainActivity : AppCompatActivity() {
             return@setOnTouchListener true
         }
 
+        infobutton.setOnClickListener {
+            startActivity(Intent(this@MainActivity, BlockDetails::class.java))
+            finish()
+        }
+
 
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth is not supported on this device", Toast.LENGTH_SHORT).show()
@@ -292,19 +297,28 @@ class MainActivity : AppCompatActivity() {
             }
             normalizedFromLocation == "block25" && normalizedToLocation == "block34" ||
                     normalizedFromLocation == "block34" && normalizedToLocation == "block25" -> {
-                mapImageView.setImageResource(R.drawable.b25_b34)
+                mapImageView.setImageResource(R.drawable.b34_b25)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
             }
             normalizedFromLocation == "block34" && normalizedToLocation == "block36" ||
                     normalizedFromLocation == "block36" && normalizedToLocation == "block34" -> {
-               mapImageView.setImageResource(R.drawable.b36_b34)
+                mapImageView.setImageResource(R.drawable.b36_b34)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
 
             }
 
             normalizedFromLocation == "maingate" && normalizedToLocation == "admissionblock" ||
-                    normalizedFromLocation == "admissionblock" && normalizedToLocation == "maingate" -> {
+                    normalizedFromLocation == "admissionblock" && normalizedToLocation == "maingate"
+                    ||  normalizedFromLocation == "maingate" && normalizedToLocation == "block30"
+                    || normalizedFromLocation == "block30" && normalizedToLocation == "maingate" -> {
                 mapImageView.setImageResource(R.drawable.main_30)
+                textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
+
+
+                }
+            normalizedFromLocation == "maingate" && normalizedToLocation == "bh1" ||
+                    normalizedFromLocation == "bh1" && normalizedToLocation == "maingate" -> {
+                mapImageView.setImageResource(R.drawable.gate_bh1)
                 textToSpeech.speak("Your Path is highlighted", TextToSpeech.QUEUE_FLUSH, null, null)
 
             }
@@ -414,7 +428,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
 
 
 

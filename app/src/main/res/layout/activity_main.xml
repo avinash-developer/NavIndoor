@@ -5,12 +5,25 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+
     <ImageView
         android:id="@+id/mapImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/campus_map"
         android:contentDescription="University Map" />
+
+    <ImageView
+        android:id="@+id/collegeLogoImageView"
+        android:layout_width="150dp"
+        android:layout_height="88dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginLeft="8dp"
+
+        android:contentDescription="College Logo"
+        android:src="@drawable/college_logo" />
 
     <ImageView
         android:id="@+id/markerImageView"

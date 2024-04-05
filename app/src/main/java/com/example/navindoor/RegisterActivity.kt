@@ -22,6 +22,8 @@ class RegisterActivity : AppCompatActivity() {
         CognitoHelper.initialize(this@RegisterActivity)
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
+
+
         if (sharedPreferences.getBoolean("registered", false)) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -31,8 +33,10 @@ class RegisterActivity : AppCompatActivity() {
         val signUpButton: Button = findViewById(R.id.signUpButton)
         val usernameEditText: EditText = findViewById(R.id.usernameEditText)
         val passwordEditText: EditText = findViewById(R.id.passwordEditText)
+        val nameEditText: EditText = findViewById(R.id.nameEditText)
         val enableNearbyPermissionsButton: Button = findViewById(R.id.enableNearbyPermissionsButton)
         val continueWithoutRegisterButton: Button = findViewById(R.id.continueWithoutRegisterButton)
+        val turnOnLocationButton: Button = findViewById(R.id.turnOnLocationButton)
 
         continueWithoutRegisterButton.setOnClickListener {
             startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
@@ -50,9 +54,11 @@ class RegisterActivity : AppCompatActivity() {
         signUpButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
+            val name = nameEditText.text.toString()
             val attributes = mapOf(
                 "email" to username,
-                "custom:password" to password
+                "custom:password" to password,
+                "name" to name
             )
 
             CognitoHelper.register(username, password, attributes, object : SignUpHandler {
@@ -74,9 +80,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
             })
         }
+        turnOnLocationButton.setOnClickListener {
+            // Open the location settings screen
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+        }
 
 
     }
+
+
 
 
 }

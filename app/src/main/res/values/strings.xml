@@ -1,4 +1,61 @@
 <resources>
     <string name="app_name">NavIndoor</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="search_hint">Enter search query</string>
+    <string name="search_title">Search</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="block_names">
+        <item>Block 1: LIM</item>
+        <item>Block 2: Campus Café</item>
+        <item>Block 3: Auditorium</item>
+        <item>Block 4: LIT Engineering</item>
+        <item>Block 5: LIT Pharmacy</item>
+        <item>Block 6: LIT Architecture</item>
+        <item>Block 7: LIT Pharmacy</item>
+        <item>Block 8: Shri Baldev Raj Mittal Hospital</item>
+        <item>Block 9: Girls Hostel 1</item>
+        <item>Block 10: Girls Hostel 2</item>
+        <item>Block 11: Girls Hostel 3</item>
+        <item>Block 12: Girls Hostel 4</item>
+        <item>Block 13: LIT Polytechnic</item>
+        <item>Block 14: Business Block</item>
+        <item>Block 15: Lovely Mall</item>
+        <item>Block 16: Hotel Mgt</item>
+        <item>Block 17: Mall-II</item>
+        <item>Block 18: Education</item>
+        <item>Block 19: Auditorium</item>
+        <item>Block 20: LSB</item>
+        <item>Block 21: Girl Hostel 5</item>
+        <item>Block 22: Girl Hostel 6</item>
+        <item>Block 23: Auditorium</item>
+        <item>Block 24: Auditorium</item>
+        <item>Block 25: Engineering</item>
+        <item>Block 26: Engineering</item>
+        <item>Block 27: Engineering</item>
+        <item>Block 28: Engineering</item>
+        <item>Block 29: Engineering</item>
+        <item>Block 30: Chancellor Office</item>
+        <item>Block 31: Administrative Block</item>
+        <item>Block 32: Administrative Block</item>
+        <item>Block 33: Engineering</item>
+        <item>Block 34: Engineering</item>
+        <item>Block 35: Engineering</item>
+        <item>Block 36: Engineering</item>
+        <item>Block 37: Engineering</item>
+        <item>Block 38: Engineering</item>
+        <item>Block 39: STP</item>
+        <item>Block 40: Store</item>
+        <item>Block 41: Staff Residence</item>
+        <item>Block 42: Staff Residence</item>
+        <item>Block 43: Boys Hostel 1</item>
+        <item>Block 45: Boys Hostel 2</item>
+        <item>Block 46: Boys Hostel 3</item>
+        <item>Block 47: Boys Hostel 4</item>
+        <item>Block 51: Boys Hostel 5</item>
+        <item>Block 52: Boys Hostel 6</item>
+        <item>Block 53: Academic Block 1</item>
+        <item>Block 54: Academic Block 2</item>
+        <item>Block 55: Academic Block 3</item>
+    </string-array>
 </resources>
