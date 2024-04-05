@@ -1,0 +1,499 @@
+<!-- activity_block_details.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".BlockDetails">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <Button
+            android:id="@+id/viewAllButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View All"
+            android:background="@drawable/button_background"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"/>
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:background="@drawable/button_background"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Block 1 -->
+        <TextView
+            android:id="@+id/block1TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 1: LIM"
+            android:textSize="18sp"
+            tools:text="Block 1: LIM" />
+
+        <!-- Block 2 -->
+        <TextView
+            android:id="@+id/block2TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 2: Campus Café"
+            android:textSize="18sp"
+            tools:text="Block 2: Campus Café" />
+
+        <!-- Block 3 -->
+        <TextView
+            android:id="@+id/block3TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 3: Auditorium"
+            android:textSize="18sp"
+            tools:text="Block 3: Auditorium" />
+
+        <!-- Block 4 -->
+        <TextView
+            android:id="@+id/block4TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 4: LIT Engineering"
+            android:textSize="18sp"
+            tools:text="Block 4: LIT Engineering" />
+
+        <!-- Block 5 -->
+        <TextView
+            android:id="@+id/block5TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 5: LIT Pharmacy"
+            android:textSize="18sp"
+            tools:text="Block 5: LIT Pharmacy" />
+
+        <!-- Block 6 -->
+        <TextView
+            android:id="@+id/block6TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 6: LIT Architecture"
+            android:textSize="18sp"
+            tools:text="Block 6: LIT Architecture" />
+
+        <!-- Block 7 -->
+        <TextView
+            android:id="@+id/block7TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 7: LIT Pharmacy"
+            android:textSize="18sp"
+            tools:text="Block 7: LIT Pharmacy" />
+
+        <!-- Block 8 -->
+        <TextView
+            android:id="@+id/block8TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 8: Shri Baldev Raj Mittal Hospital"
+            android:textSize="18sp"
+            tools:text="Block 8: Shri Baldev Raj Mittal Hospital" />
+
+        <!-- Block 9 -->
+        <TextView
+            android:id="@+id/block9TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 9: Girls Hostel 1"
+            android:textSize="18sp"
+            tools:text="Block 9: Girls Hostel 1" />
+
+        <!-- Block 10 -->
+        <TextView
+            android:id="@+id/block10TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 10: Girls Hostel 2"
+            android:textSize="18sp"
+            tools:text="Block 10: Girls Hostel 2" />
+
+        <!-- Block 11 -->
+        <TextView
+            android:id="@+id/block11TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 11: Girls Hostel 3"
+            android:textSize="18sp"
+            tools:text="Block 11: Girls Hostel 3" />
+
+        <!-- Block 12 -->
+        <TextView
+            android:id="@+id/block12TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 12: Girls Hostel 4"
+            android:textSize="18sp"
+            tools:text="Block 12: Girls Hostel 4" />
+
+        <!-- Block 13 -->
+        <TextView
+            android:id="@+id/block13TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 13: LIT Polytechnic"
+            android:textSize="18sp"
+            tools:text="Block 13: LIT Polytechnic" />
+
+        <!-- Block 14 -->
+        <TextView
+            android:id="@+id/block14TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 14: Business Block"
+            android:textSize="18sp"
+            tools:text="Block 14: Business Block" />
+
+        <!-- Block 15 -->
+        <TextView
+            android:id="@+id/block15TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 15: Lovely Mall"
+            android:textSize="18sp"
+            tools:text="Block 15: Lovely Mall" />
+
+        <!-- Block 16 -->
+        <TextView
+            android:id="@+id/block16TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 16: Hotel Mgt"
+            android:textSize="18sp"
+            tools:text="Block 16: Hotel Mgt" />
+
+        <!-- Block 17 -->
+        <TextView
+            android:id="@+id/block17TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 17: Mall-II"
+            android:textSize="18sp"
+            tools:text="Block 17: Mall-II" />
+
+        <!-- Block 18 -->
+        <TextView
+            android:id="@+id/block18TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 18: Education"
+            android:textSize="18sp"
+            tools:text="Block 18: Education" />
+
+        <!-- Block 19 -->
+        <TextView
+            android:id="@+id/block19TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 19: Auditorium"
+            android:textSize="18sp"
+            tools:text="Block 19: Auditorium" />
+
+        <!-- Block 20 -->
+        <TextView
+            android:id="@+id/block20TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 20: LSB"
+            android:textSize="18sp"
+            tools:text="Block 20: LSB" />
+
+        <!-- Block 21 -->
+        <TextView
+            android:id="@+id/block21TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 21: Girl Hostel 5"
+            android:textSize="18sp"
+            tools:text="Block 21: Girl Hostel 5" />
+
+        <!-- Block 22 -->
+        <TextView
+            android:id="@+id/block22TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 22: Girl Hostel 6"
+            android:textSize="18sp"
+            tools:text="Block 22: Girl Hostel 6" />
+
+        <!-- Block 23 -->
+        <TextView
+            android:id="@+id/block23TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 23: Auditorium"
+            android:textSize="18sp"
+            tools:text="Block 23: Auditorium" />
+
+        <!-- Block 24 -->
+        <TextView
+            android:id="@+id/block24TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 24: Auditorium"
+            android:textSize="18sp"
+            tools:text="Block 24: Auditorium" />
+
+        <!-- Block 25 -->
+        <TextView
+            android:id="@+id/block25TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 25: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 25: Engineering" />
+
+        <!-- Block 26 -->
+        <TextView
+            android:id="@+id/block26TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 26: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 26: Engineering" />
+
+        <!-- Block 27 -->
+        <TextView
+            android:id="@+id/block27TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 27: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 27: Engineering" />
+
+        <!-- Block 28 -->
+        <TextView
+            android:id="@+id/block28TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 28: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 28: Engineering" />
+
+        <!-- Block 29 -->
+        <TextView
+            android:id="@+id/block29TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 29: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 29: Engineering" />
+
+        <!-- Block 30 -->
+        <TextView
+            android:id="@+id/block30TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 30: Chancellor Office"
+            android:textSize="18sp"
+            tools:text="Block 30: Chancellor Office" />
+
+        <!-- Block 31 -->
+        <TextView
+            android:id="@+id/block31TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 31: Administrative Block"
+            android:textSize="18sp"
+            tools:text="Block 31: Administrative Block" />
+
+        <!-- Block 32 -->
+        <TextView
+            android:id="@+id/block32TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 32: Administrative Block"
+            android:textSize="18sp"
+            tools:text="Block 32: Administrative Block" />
+
+        <!-- Block 33 -->
+        <TextView
+            android:id="@+id/block33TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 33: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 33: Engineering" />
+
+        <!-- Block 34 -->
+        <TextView
+            android:id="@+id/block34TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 34: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 34: Engineering" />
+
+        <!-- Block 35 -->
+        <TextView
+            android:id="@+id/block35TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 35: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 35: Engineering" />
+
+        <!-- Block 36 -->
+        <TextView
+            android:id="@+id/block36TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 36: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 36: Engineering" />
+
+        <!-- Block 37 -->
+        <TextView
+            android:id="@+id/block37TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 37: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 37: Engineering" />
+
+        <!-- Block 38 -->
+        <TextView
+            android:id="@+id/block38TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 38: Engineering"
+            android:textSize="18sp"
+            tools:text="Block 38: Engineering" />
+
+        <!-- Block 39 -->
+        <TextView
+            android:id="@+id/block39TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 39: STP"
+            android:textSize="18sp"
+            tools:text="Block 39: STP" />
+
+        <!-- Block 40 -->
+        <TextView
+            android:id="@+id/block40TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 40: Store"
+            android:textSize="18sp"
+            tools:text="Block 40: Store" />
+
+        <!-- Block 41 -->
+        <TextView
+            android:id="@+id/block41TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 41: Staff Residence"
+            android:textSize="18sp"
+            tools:text="Block 41: Staff Residence" />
+
+        <!-- Block 42 -->
+        <TextView
+            android:id="@+id/block42TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 42: Staff Residence"
+            android:textSize="18sp"
+            tools:text="Block 42: Staff Residence" />
+
+        <!-- Block 43 -->
+        <TextView
+            android:id="@+id/block43TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 43: Boys Hostel 1"
+            android:textSize="18sp"
+            tools:text="Block 43: Boys Hostel 1" />
+
+        <TextView
+            android:id="@+id/block45TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 45: Boys Hostel 2"
+            android:textSize="18sp"
+            tools:text="Block 45: Boys Hostel 2" />
+
+
+        <TextView
+            android:id="@+id/block46TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 46: Boys Hostel 3"
+            android:textSize="18sp"
+            tools:text="Block 46: Boys Hostel 3" />
+
+
+        <TextView
+            android:id="@+id/block47TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 47: Boys Hostel 4"
+            android:textSize="18sp"
+            tools:text="Block 47: Boys Hostel 4" />
+
+
+
+
+
+        <TextView
+            android:id="@+id/block51TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 51: Boys Hostel-5"
+            android:textSize="18sp"
+            tools:text="Block 51: Boys Hostel-5" />
+
+        <!-- Block 52 -->
+        <TextView
+            android:id="@+id/block52TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 52: Boys Hostel-6"
+            android:textSize="18sp"
+            tools:text="Block 52: Boys Hostel-6" />
+
+        <!-- Block 53 -->
+        <TextView
+            android:id="@+id/block53TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 53: Academic Block 1"
+            android:textSize="18sp"
+            tools:text="Block 53: Academic Block 1" />
+
+        <!-- Block 54 -->
+        <TextView
+            android:id="@+id/block54TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 54: Academic Block 2"
+            android:textSize="18sp"
+            tools:text="Block 54: Academic Block 2" />
+
+        <!-- Block 55 -->
+        <TextView
+            android:id="@+id/block55TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 55: Academic Block 3"
+            android:textSize="18sp"
+            tools:text="Block 55: Academic Block 3" />
+
+
+
+    </LinearLayout>
+</ScrollView>
